@@ -18,6 +18,9 @@
     if (langName === 'mermaid') {
       return '<div class="mermaid">' + token.content + '</div>';
     }
+    else if (langName === 'WaveDrom') {
+      return '<script type="WaveDrom">' + token.content + '</script>';
+    }
     return original_fence(tokens, idx, options, env, slf);
   };
 
@@ -91,10 +94,8 @@
       _doc.getElementById('preview').innerHTML = transform(getFileType(), getContent());
 
       mermaid.init();
+      WaveDrom.ProcessAll();
       Array.prototype.forEach.call(_doc.querySelectorAll('pre code'), hljs.highlightBlock);
-
-      replaceCodeToWaveDrom();
-
       autoScroll('body', beforePageYOffset);
       style_header();
     }
@@ -126,19 +127,6 @@
     } else {
       // do nothing
     }
-  }
-
-  function replaceCodeToWaveDrom(){
-      var elements = _doc.getElementsByClassName('language-WaveDrom');
-      for(var i=elements.length-1 ; i>=0 ; i--){
-          var elem = elements[i];
-          var script = _doc.createElement('script');
-          script.type = 'WaveDrom';
-          script.innerHTML = elem.textContent;
-          var pre = elem.parentNode;
-          pre.parentNode.replaceChild(script,pre);
-      }
-      WaveDrom.ProcessAll();
   }
 
   loadPreview();
